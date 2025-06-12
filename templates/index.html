@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Recipe Wizard Chef</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Recipe Wizard Chef 🍳</h1>
+    <form method="post">
+        <label>Ingredients (comma-separated):</label><br>
+        <input type="text" name="ingredients"><br><br>
+
+        <label>Diet (optional):</label><br>
+        <input type="text" name="diet" placeholder="e.g. vegetarian"><br><br>
+
+        <label>Cuisine Preference:</label><br>
+        <input type="text" name="cuisine" placeholder="e.g. Italian"><br><br>
+
+        <label>Cooking Skill Level:</label><br>
+        <select name="skill">
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Expert</option>
+        </select><br><br>
+
+        <input type="submit" value="Get Recipes!">
+    </form>
+
+    {% if results %}
+    <div class="results">
+        <h2>🍽️ Your Recipes</h2>
+        {% for recipe in results %}
+        <div class="card">
+            <h3>{{ recipe.recipe_title }}</h3>
+            <p><strong>Description:</strong> {{ recipe.description }}</p>
+            <p><strong>Tip:</strong> {{ recipe.tip }}</p>
+            <p><strong>Warning:</strong> {{ recipe.warning }}</p>
+            <p><strong>Comment:</strong> {{ recipe.funny_comment }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+</html>
