@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from utils.recipe_helper import fetch_recipes, generate_response
 import os, json
 
-app = Flask(__name__, template_folder="../templates", static_folder="../static")
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -19,11 +19,13 @@ def home():
         try:
             parsed = json.loads(ai_response)
             results = parsed.get("recipes", [])
-        except:
-            results = [{"recipe_title": "Error", "description": "AI response error"}]
+        except Exception as e:
+            results = [{
+                "recipe_title": "Error",
+                "description": f"AI response error: {str(e)}"
+            }]
 
     return render_template('index.html', results=results)
 
-# Required for Vercel
-def handler(request):
-    return app(request.environ, start_response=lambda status, headers: None)
+# Expose `app` directly for Vercel Python runtime
+app = app
